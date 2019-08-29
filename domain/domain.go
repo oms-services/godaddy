@@ -15,6 +15,16 @@ type Arguments struct {
 	Domain string `json:"domain,omitempty"`
 }
 
+//Response struct
+type Response struct {
+	Available  bool   `json:"available"`
+	Currency   string `json:"currency"`
+	Definitive bool   `json:"definitive"`
+	Domain     string `json:"domain"`
+	Period     int32  `json:"period"`
+	Price      int32  `json:"price"`
+}
+
 //CheckDomainAvailability GoDaddy
 func CheckDomainAvailability(responseWriter http.ResponseWriter, request *http.Request) {
 
@@ -45,6 +55,27 @@ func CheckDomainAvailability(responseWriter http.ResponseWriter, request *http.R
 		return
 	}
 
-	bytes, _ := json.Marshal(DomainAvailableResponse)
+	var response Response
+	if !DomainAvailableResponse.Available {
+		response = Response{
+			Available:  DomainAvailableResponse.Available,
+			Currency:   "NA",
+			Definitive: DomainAvailableResponse.Definitive,
+			Domain:     DomainAvailableResponse.Domain,
+			Period:     0,
+			Price:      0,
+		}
+	} else {
+		response = Response{
+			Available:  DomainAvailableResponse.Available,
+			Currency:   DomainAvailableResponse.Currency,
+			Definitive: DomainAvailableResponse.Definitive,
+			Domain:     DomainAvailableResponse.Domain,
+			Period:     DomainAvailableResponse.Period,
+			Price:      DomainAvailableResponse.Price,
+		}
+	}
+
+	bytes, _ := json.Marshal(response)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }

@@ -35,13 +35,19 @@ actions:
           help: Returns boolean for availability.
           type: boolean
         currency:
-          help: The price in currency.
+          help: The currency.
           type: string
+        definitive:
+          help: The definitive.
+          type: boolean
         domain:
-          help: The searched domain name.
+          help: The domain name.
           type: string
+        period:
+          help: The period of domain.
+          type: int
         price:
-          help: The purchase amount of domain.
+          help: The price of domain.
           type: int
 environment:
   API_KEY:
